@@ -9,16 +9,15 @@ import scala.util.parsing.combinator.JavaTokenParsers
 
 class HrdParser extends JavaTokenParsers {
   def dump         = rep(entry)
-  def entry        = atom ~ space ~':' ~ space ~ ( atom | hash | list | set | sortedSet )
+  def entry        = atom ~ ":" ~ ( atom | hash | list | sortedSet | set )
   def atom         = floatingPointNumber | stringLiteral | bytes
-  def bytes        = '|' ~> base64 <~ '|'
+  def bytes        = "|" ~> base64 <~ "|"
   def base64       = """[a-zA-Z0-9+/]+(=){0,2}""".r
-  def list         = '[' ~> space ~> rep(atom) <~ space <~ ']'
-  def hash         = '{' ~> space ~> repsep(keyValuePair, ',') <~ space <~ '}'
-  def keyValuePair = atom ~ space ~ ':' ~ space ~ atom
-  def set          = "#{" ~> space ~> rep(atom) <~ space <~ '}'
-  def sortedSet    = "#{" ~> space ~> repsep(scoredPair, space) <~ space <~ '}'
-  def scoredPair   = '(' <~ space ~> floatingPointNumber <~ space ~> atom <~ space ~> ')'
+  def list         = "[" ~> rep(atom) <~ "]"
+  def hash         = "{" ~> repsep(keyValuePair, ",") <~ "}"
+  def keyValuePair = atom <~ ":" ~ atom
+  def set          = "#{" ~> rep(atom) <~ "}"
+  def sortedSet    = "#{" ~> rep(scoredPair) <~ "}"
+  def scoredPair   = "(" ~> floatingPointNumber ~ atom <~ ")"
 
-  def space: Parser[Any]        = """\s*""".r
 }
