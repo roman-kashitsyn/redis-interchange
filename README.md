@@ -11,7 +11,7 @@ Here is a simple example of dump:
     "set"       : #{1 2 3}
     "sortedSet" : #{ (1 "firstEntry") (0.1 "anotherEntry")}
     "list"      : [1 "hello" "world"]
-    "binary"    : |base64|
+    "binary"    : |aGVsbG8=|
 
 BNF grammar
 ===========
