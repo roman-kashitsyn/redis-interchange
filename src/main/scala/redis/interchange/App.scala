@@ -5,5 +5,9 @@ package redis.interchange;
  *
  */
 object App extends Application {
-  println( "Hello World!" );
+  import hrd.HrdParser
+
+  val parser = new HrdParser
+
+  println( parser.parseAll(parser.dump, """ "hello":1 """) );
 }

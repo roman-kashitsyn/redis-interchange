@@ -20,7 +20,7 @@ BNF grammar
     entry        ::= atom ':' (atom | hash | list | set | sortedSet)
     atom         ::= float | string | bytes
     bytes        ::= '|' base64 '|'
-    base64       ::= 'a-zA-Z+/(=){0,2}'
+    base64       ::= '[a-zA-Z0-9+/]+(=){0,2}'
     hash         ::= '{' [keyValuePair {',' keyValuePair} ] '}'
     keyValuePair ::= atom ':' atom
     list         ::= '[' {atom} ']'

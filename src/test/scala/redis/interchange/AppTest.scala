@@ -19,11 +19,20 @@ object AppTest {
  */
 class AppTest extends TestCase("app") {
 
-    /**
-     * Rigourous Tests :-)
-     */
-    def testOK() = assertTrue(true);
-    def testKO() = assertTrue(false);
+  def testParse() {
+    import hrd.HrdParser
+
+    val parser = new HrdParser
+
+    println( parser.parseAll(parser.dump, """
+    "key"       : "value"
+    "hash"      : {"hashKey" : 1, "anotherKey" : "value"}
+    "set"       : #{1 2 3}
+    "sortedSet" : #{ (1 "firstEntry") (0.1 "anotherEntry")}
+    "list"      : [1 "hello" "world"]
+    "binary"    : |base64|
+    """) );
+  }
     
 
 }
