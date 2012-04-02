@@ -13,11 +13,11 @@ import redis.clients.jedis.Jedis
 class DumpingSuite extends FunSuite {
 
   test("dump of demo example works") {
-    val config = RedisConfig()
-    new Dumper().importAll(config, TestData.DemoExample)
+    val dumper = new Dumper()
 
+    dumper.importAll(TestData.DemoExample)
 
-    val jedis: Jedis = new Jedis(config.host, config.port)
+    val jedis: Jedis = new Jedis(dumper.host, dumper.port)
     assert("value" == jedis.get("key"))
     assert(jedis.smembers("set").size() == 3)
     assert(jedis.zcount("sortedSet", 0, 1) == 2L)

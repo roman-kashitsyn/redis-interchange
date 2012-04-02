@@ -8,19 +8,19 @@ import redis.clients.jedis.{JedisPool, Jedis}
  * @author Roman Kashitsyn
  */
 
-class Dumper {
+class Dumper(val host: String = "localhost", val port: Int = 6379) {
 
-  def importAll(config: RedisConfig, dump: String) {
+  def importAll(dump: String) {
     val parser = new HrdParser
     val dmp = parser.parseAll(parser.dump, dump)
     dmp match {
-      case parser.Success(_, _) => dumpToRedis(dmp.get, config)
+      case parser.Success(_, _) => dumpToRedis(dmp.get)
       case parser.Error(msg, _) => throw new RuntimeException("Invalid redis HRD: " + msg)
     }
   }
 
-  private def dumpToRedis(dump: Map[Any, Any], config: RedisConfig) {
-    val jedis = new Jedis(config.host, config.port)
+  private def dumpToRedis(dump: Map[Any, Any]) {
+    val jedis = new Jedis(host, port)
     dump.foreach(dumpEntry(jedis, _))
   }
 
