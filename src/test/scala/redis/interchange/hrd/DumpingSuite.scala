@@ -14,10 +14,11 @@ class DumpingSuite extends FunSuite {
 
   test("dump of demo example works") {
     val dumper = new Dumper()
+    val jedis: Jedis = new Jedis(dumper.host, dumper.port)
+    jedis.flushAll()
 
     dumper.importAll(TestData.DemoExample)
 
-    val jedis: Jedis = new Jedis(dumper.host, dumper.port)
     assert("value" == jedis.get("key"))
     assert(jedis.smembers("set").size() == 3)
     assert(jedis.zcount("sortedSet", 0, 1) == 2L)

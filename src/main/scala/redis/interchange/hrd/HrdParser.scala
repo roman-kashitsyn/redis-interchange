@@ -9,6 +9,13 @@ import collection.SortedSet
  */
 
 class HrdParser extends JavaTokenParsers {
+
+  // Use that for java-like comments
+  // protected override val whiteSpace = """(\s|//.*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
+
+  protected override val whiteSpace = """(\s|--.*)+""".r
+
+
   def dump: Parser[Map[Any, Any]]         = rep(entry) ^^ {Map() ++ _}
   def entry: Parser[(Any, Any)]           = atom ~ ":" ~ ( atom | hash | list | sortedSet | set ) ^^ {case k ~ ":" ~ v => (k ,v)}
   def atom: Parser[Any]                   = floatingPointNumber | stringLiteral ^^ unquote | bytes

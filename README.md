@@ -6,6 +6,7 @@ It is implementation of simple human readable redis dump format in the
 Scala programming language with amazing Parser Combinators library.
 Here is a simple example of dump:
 
+    -- Comment line
     "key"       : "value"
     "hash"      : {"hashKey" : 1, "anotherKey" : "value"}
     "set"       : #{1 2 3}

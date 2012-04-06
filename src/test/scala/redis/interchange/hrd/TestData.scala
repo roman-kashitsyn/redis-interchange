@@ -7,6 +7,7 @@ package redis.interchange.hrd
 object TestData {
 
   val DemoExample = """
+    -- Comment line
     "key"       : "value"
     "hash"      : {"hashKey" : 1, "anotherKey" : "value"}
     "set"       : #{1 2 3}
