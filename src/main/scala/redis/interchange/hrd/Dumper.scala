@@ -28,8 +28,8 @@ class Dumper(val host: String = "localhost", val port: Int = 6379) {
   private def dumpEntry(jedis: Jedis, e: (Any, Any)) {
     val (k, v) = e
     val key = toBytes(k)
-    val pipeline = jedis
-    //pipeline.multi();
+    val pipeline = jedis.pipelined()
+
     v match {
       case l: List[Any] => l.foreach(v => pipeline.lpush(key, toBytes(v)))
       case m: Map[Any, Any] => m.foreach(tuple => pipeline.hset(key, toBytes(tuple._1), toBytes(tuple._2)))
@@ -37,7 +37,8 @@ class Dumper(val host: String = "localhost", val port: Int = 6379) {
       case s: Set[Any] => s.foreach(e => pipeline.sadd(key, toBytes(e)))
       case v: Any => pipeline.set(key, toBytes(v))
     }
-    //pipeline.exec()
+
+    pipeline.sync()
   }
 
   private def toBytes(obj: Any): Array[Byte] = obj match {

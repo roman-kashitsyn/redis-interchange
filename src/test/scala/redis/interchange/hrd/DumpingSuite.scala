@@ -12,7 +12,7 @@ import redis.clients.jedis.Jedis
 @RunWith(classOf[JUnitRunner])
 class DumpingSuite extends FunSuite {
 
-  test("dump of demo example works") {
+  test("Dump of demo example exported successfully") {
     val dumper = new Dumper()
     val jedis: Jedis = new Jedis(dumper.host, dumper.port)
     jedis.flushAll()

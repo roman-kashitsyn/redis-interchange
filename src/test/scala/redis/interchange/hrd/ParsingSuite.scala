@@ -12,7 +12,7 @@ import collection.SortedSet
 @RunWith(classOf[JUnitRunner])
 class ParsingSuite extends FunSuite {
 
-  test("example from demo works fine") {
+  test("Demo example works fine") {
     val parser = new HrdParser
 
     val result = parser.parseAll(parser.dump, TestData.DemoExample)
@@ -33,6 +33,20 @@ class ParsingSuite extends FunSuite {
     assert(dump("binary").isInstanceOf[Array[Byte]])
     assert(dump("key") == "value")
     assert(java.util.Arrays.equals(dump("binary").asInstanceOf[Array[Byte]], toAsciiBytes("hello")))
+  }
+
+  test("Comments are fully ignored") {
+    val parser = new HrdParser
+    val result = parser.parseAll(parser.dump, """
+    -- Several comment
+    -- lines
+    "key" : "value"
+    """)
+
+    val dump = result.get
+
+    assert(dump.size == 1)
+    assert(dump("key") == "value")
   }
 
   private def toAsciiBytes(str: String): Array[Byte] = str.map(_.toByte).toArray
