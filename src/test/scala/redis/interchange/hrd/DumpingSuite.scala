@@ -24,5 +24,4 @@ class DumpingSuite extends FunSuite {
     assert(jedis.zcount("sortedSet", 0, 1) == 2L)
     assert(jedis.llen("list") == 3L)
   }
-
 }

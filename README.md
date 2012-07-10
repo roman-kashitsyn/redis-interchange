@@ -14,18 +14,27 @@ Here is a simple example of dump:
     "list"      : [1 "hello" "world"]
     "binary"    : |aGVsbG8=|
 
-BNF grammar
-===========
+    -- Keys with expiration
+    "exp1" [1341922275] : "value" -- Expires at 2012-10-07T07:11:15
+    "exp2" [1d5h]       : "value" -- Expires after 1 day and 5 hours
 
-    dump         ::= {entry}
-    entry        ::= atom ':' (atom | hash | list | set | sortedSet)
-    atom         ::= float | string | bytes
-    bytes        ::= '|' base64 '|'
-    base64       ::= '[a-zA-Z0-9+/]+(=){0,2}'
-    hash         ::= '{' [keyValuePair {',' keyValuePair} ] '}'
-    keyValuePair ::= atom ':' atom
-    list         ::= '[' {atom} ']'
-    set          ::= '#{' {atom} '}'
-    sortedSet    ::= '#{' {scoredPair} '}'
-    scoredPair   ::= '(' score atom ')'
-    score        ::= float
+EBNF grammar
+============
+
+    dump          = {entry};
+    key           = atom ['[' timeToLive ']'];
+    timeToLive    = (unixTimeStamp | expiresAfter);
+    unixTimeStamp = integer
+    expiresAfter  = timeSpan
+    timeSpan      = [integer+ 'd'][integer+ 'h'][integer+ 'm'][integer+ 's']
+    entry         = atom ':' (atom | hash | list | set | sortedSet);
+    atom          = float | string | bytes;
+    bytes         = '|' base64 '|';
+    base64        = '[a-zA-Z0-9+/]+(=){0,2}';
+    hash          = '{' [keyValuePair {',' keyValuePair} ] '}';
+    keyValuePair  = atom ':' atom;
+    list          = '[' {atom} ']';
+    set           = '#{' {atom} '}';
+    sortedSet     = '#{' {scoredPair} '}';
+    scoredPair    = '(' score atom ')';
+    score         = float;
